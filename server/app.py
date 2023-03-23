@@ -51,18 +51,18 @@ def pizza():
 def restaurant_pizzas():
     try:
         new_rp = RestaurantPizza(
-            price=request.get_json()['price'],
-            pizza_id=request.get_json()['pizza_id'],
-            restaurant_id=request.get_json()['restaurant_id']
+            price=request.get_json(force=True)['price'],
+            pizza_id=request.get_json(force=True)['pizza_id'],
+            restaurant_id=request.get_json(force=True)['restaurant_id']
         )
         db.session.add(new_rp)
         db.session.commit()
 
-        pizza = Pizza.query.filter_by(id=new_rp.pizza_id).first()
-        return make_response(pizza.to_dict(rules=('-created_at', '-updated_at')), 201)
+        # pizza = Pizza.query.filter_by(id=new_rp.pizza_id).first()
+        return make_response(new_rp.to_dict(rules=('-created_at', '-updated_at')), 201)
     
     except ValueError:
-        return make_response({"errors": ["validation errors"]}, 400)
+        return make_response({'error': 'Invalid input'}, 400)
 
 
 if __name__ == '__main__':

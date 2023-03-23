@@ -62,8 +62,8 @@ class RestaurantPizza(db.Model, SerializerMixin):
 
     @validates('price')
     def validate_price(self, key, price):
-        # if not 1 <= price <= 30:
-        if price < 1 or price > 30:
+        if not price or not 1 <= price <= 30:
+        # if price < 1 or price > 30:
             raise ValueError('must have a price between 1 and 30')
         return price
 
